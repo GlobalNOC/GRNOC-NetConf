@@ -28,8 +28,11 @@ sub main{
                                               
     my $interfaces = $device->get_interfaces();
 
+    my $config = $device->get_configuration();
+
     open(my $foo, ">", "/tmp/foo.txt");
     print $foo Data::Dumper::Dumper($interfaces);
+    print $foo Data::Dumper::Dumper($config);
     close($foo);
 }
     

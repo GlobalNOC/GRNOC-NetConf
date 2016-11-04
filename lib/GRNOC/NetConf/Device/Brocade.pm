@@ -44,4 +44,9 @@ sub get_interfaces{
     return $self->model_inst->get_interfaces();
 }
 
+sub get_configuration{
+    my $self = shift;
+    return $self->model_inst->get_configuration();
+}
+
 1;

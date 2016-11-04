@@ -189,29 +189,28 @@ sub get_configuration{
     
     my $xml = "";
     my $writer = XML::Writer->new( OUTPUT => \$xml,
-                                   NAMESPACES => 1,
-                                   PREFIX_MAP => { NETCONF => 'nc',
-                                                   BROCADE => 'brcd' },
-                                   FORCED_NS_DECLS => [NETCONF, BROCADE] );
+                                   NAMESPACES => 1 );
+
+    $writer->addPrefix(NETCONF, 'nc');
+    $writer->addPrefix(BROCADE, 'brcd');
 
     $writer->startTag([NETCONF, "rpc"], "message-id" => $self->_get_msg_id());
     $writer->startTag([NETCONF, "get-config"]);
     $writer->startTag([NETCONF, "source"]);
-    $writer->startTag([NETCONF, "running"]);
+    $writer->emptyTag([NETCONF, "running"]);
     $writer->endTag();
-    $writer->endTag();
-    $writer->startTag([NETCONF, "filter"], type => [NETCONF, "subtree"]);
+    $writer->startTag([NETCONF, "filter"], [NETCONF, "type"] => "subtree");
     $writer->startTag([BROCADE, "netiron-config"]);
     $writer->endTag();
     $writer->endTag();
     $writer->endTag();
     $writer->endTag();
     $writer->end();
-    
+
     $self->send($xml);
     my $resp = $self->recv();
-
-    return $resp;
+    
+    return $resp->{'nc:data'}->{'brcd:netiron-config'};
 }
 
 

@@ -45,4 +45,9 @@ sub get_interfaces{
     return $self->version_inst->get_interfaces();
 }
 
+sub get_configuration{
+    my $self = shift;
+    return $self->version_inst->get_configuration();
+}
+
 1;
