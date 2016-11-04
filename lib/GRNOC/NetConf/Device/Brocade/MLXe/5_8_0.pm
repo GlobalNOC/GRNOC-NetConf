@@ -213,6 +213,46 @@ sub get_configuration{
     return $resp->{'nc:data'}->{'brcd:netiron-config'};
 }
 
+sub edit_config{
+    my $self = shift;
+    my %params = @_;
+    my $xml = "";
+    my $writer = XML::Writer->new( OUTPUT => \$xml,
+                                   NAMESPACES => 1 );
+
+    $writer->addPrefix(NETCONF, 'nc');
+    $writer->addPrefix(BROCADE, 'brcd');
+
+    $writer->startTag([NETCONF, "rpc"], "message-id" => $self->_get_msg_id());
+    $writer->startTag([NETCONF, "edit-config"]);
+    
+    $writer->startTag([NETCONF, "target"]);
+    $writer->emptyTag([NETCONF, "running"]);
+    $writer->endTag();
+    
+    $writer->startTag([NETCONF, "default-operation"]);
+    $writer->characters("merge");
+    $writer->endTag();
+    
+    $writer->startTag([NETCONF, "config"]);
+    $writer->startTag([BROCADE, "netiron-config"]);
+    
+    $writer->endTag();
+    $writer->endTag();
+    $writer->endTag();
+    $writer->endTag();
+    $writer->end();
+
+    $self->logger->error($xml);
+    $self->send($xml);
+
+    my $resp = $self->recv();
+    if(defined($resp->{'nc:rpc-reply'}->{'nc:ok'})){
+        return 1;
+    }else{
+        return 0;
+    }
+}
 
 1;
 

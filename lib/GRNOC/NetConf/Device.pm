@@ -60,14 +60,23 @@ sub _create_type_object{
 
 sub get_interfaces{
     my $self = shift;
+    my %params = @_;
     $self->logger->debug("Fetching Interfaces");
-    return $self->device->get_interfaces();
+    return $self->device->get_interfaces( %params );
 }
 
 sub get_configuration{
     my $self = shift;
+    my %params = @_;
     $self->logger->debug("Fetching Configuration");
-    return $self->device->get_configuration();
+    return $self->device->get_configuration( %params );
+}
+
+sub edit_configuration{
+    my $self = shift;
+    my %params = @_;
+    $self->logger->debug("Editing Configuration");
+    return $self->device->edit_configuration( %params );
 }
 
 1;

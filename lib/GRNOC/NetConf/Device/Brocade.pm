@@ -41,12 +41,20 @@ sub _connect_to_model_version{
 
 sub get_interfaces{
     my $self = shift;
+    my %params = @_;
     return $self->model_inst->get_interfaces();
 }
 
 sub get_configuration{
     my $self = shift;
-    return $self->model_inst->get_configuration();
+    my %params = @_;
+    return $self->model_inst->get_configuration( %params );
+}
+
+sub edit_configuration{
+    my $self = shift;
+    my %params = @_;
+    return $self->model_inst->edit_configuration( %params );
 }
 
 1;

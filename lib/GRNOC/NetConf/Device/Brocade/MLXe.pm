@@ -41,13 +41,21 @@ sub _connect_to_version{
 
 sub get_interfaces{
     my $self = shift;
-
-    return $self->version_inst->get_interfaces();
+    my %params = @_;
+    return $self->version_inst->get_interfaces( %params );
 }
 
 sub get_configuration{
     my $self = shift;
-    return $self->version_inst->get_configuration();
+    my %params = @_;
+    return $self->version_inst->get_configuration( %params );
+}
+
+sub edit_configuration{
+    my $self = shift;
+    my %params = @_;
+
+    return $self->version_inst->edit_configuration( %params );
 }
 
 1;
