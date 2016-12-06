@@ -39,6 +39,16 @@ sub _connect_to_version{
     }
 }
 
+sub send{
+    my $self = shift;
+    return $self->version_inst->send(@_);
+}
+
+sub recv{
+    my $self = shift;
+    return $self->version_inst->recv();
+}
+
 sub get_interfaces{
     my $self = shift;
     my %params = @_;

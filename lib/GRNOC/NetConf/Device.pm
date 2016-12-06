@@ -22,6 +22,8 @@ has version => (is => 'rwp' );
 has device => ( is => 'rwp' );
 has model => ( is => 'rwp' );
 
+my $VERSION = '0.0.1';
+
 sub BUILD{
     my ($self) = @_;
 
@@ -56,6 +58,17 @@ sub _create_type_object{
         return;
     }
     
+}
+
+sub send{
+    my $self = shift;
+    $self->logger->debug("Calling Send");
+    return $self->device->send( @_ );
+}
+
+sub recv{
+    my $self = shift;
+    return $self->device->recv();
 }
 
 sub get_interfaces{
