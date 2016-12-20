@@ -1,0 +1,13 @@
+bin/example.pl
+lib/GRNOC/NetConf/Device.pm
+lib/GRNOC/NetConf/Device/Brocade.pm
+lib/GRNOC/NetConf/Device/Brocade/MLXe.pm
+lib/GRNOC/NetConf/Device/Brocade/MLXe/5_8_0.pm
+lib/GRNOC/NetConf/Device/JUNOS.pm
+lib/GRNOC/NetConf/Device/JUNOS/13_3R1_6.pm
+Makefile.PL
+MANIFEST			This list of files
+perl-GRNOC-NetConf.spec
+t/pod.t
+t/pod_coverage.t
+t/TEST

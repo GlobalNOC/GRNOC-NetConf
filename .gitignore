@@ -1,0 +1,10 @@
+*~
+Makefile.old
+MYMETA.json
+MYMETA.yml
+Makefile
+blib/
+cover_db/
+perl-GRNOC-NetConf-0.0.1.tar.gz
+pm_to_blib
+tap/
