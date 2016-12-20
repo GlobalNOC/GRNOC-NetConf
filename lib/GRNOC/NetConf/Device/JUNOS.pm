@@ -7,6 +7,9 @@ use warnings;
 
 use Moose;
 
+=head2 BUILD
+
+=cut
 sub BUILD{
 
 }

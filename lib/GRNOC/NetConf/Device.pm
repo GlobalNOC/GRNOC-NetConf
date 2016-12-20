@@ -22,8 +22,11 @@ has version => (is => 'rwp' );
 has device => ( is => 'rwp' );
 has model => ( is => 'rwp' );
 
-my $VERSION = '0.0.1';
+our $VERSION = '0.0.1';
 
+=head2 BUILD
+
+=cut
 sub BUILD{
     my ($self) = @_;
 
@@ -60,17 +63,25 @@ sub _create_type_object{
     
 }
 
+=head2 send
+
+=cut
 sub send{
     my $self = shift;
-    $self->logger->debug("Calling Send");
     return $self->device->send( @_ );
 }
 
+=head2 recv
+
+=cut
 sub recv{
     my $self = shift;
     return $self->device->recv();
 }
 
+=head2 get_interfaces
+
+=cut
 sub get_interfaces{
     my $self = shift;
     my %params = @_;
@@ -78,6 +89,9 @@ sub get_interfaces{
     return $self->device->get_interfaces( %params );
 }
 
+=head2 get_configuration
+
+=cut
 sub get_configuration{
     my $self = shift;
     my %params = @_;
@@ -85,6 +99,9 @@ sub get_configuration{
     return $self->device->get_configuration( %params );
 }
 
+=head2 edit_configuration
+
+=cut
 sub edit_configuration{
     my $self = shift;
     my %params = @_;

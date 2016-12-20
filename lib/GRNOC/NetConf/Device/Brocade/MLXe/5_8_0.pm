@@ -18,6 +18,9 @@ has msg_id => (is => 'rwp');
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant BROCADE => "http://brocade.com/ns/netconf/config/netiron-config/";
 
+=head2 BUILD
+
+=cut
 sub BUILD{
     my ($self) = @_;
 
@@ -49,6 +52,9 @@ sub _get_msg_id{
     return $self->msg_id;
 }
 
+=head2 send
+
+=cut
 sub send{
     my $self = shift;
     my $xml = shift;
@@ -77,6 +83,9 @@ sub send{
     return 1;
 }
 
+=head2 recv
+
+=cut
 sub recv{
     my $self = shift;
 
@@ -103,6 +112,9 @@ sub recv{
 
 }
 
+=head2 do_handshake
+
+=cut
 sub do_handshake{
     my $self = shift;
     $self->logger->debug("Sending Handshake");
@@ -122,6 +134,9 @@ sub _hello{
     return $hello;
 }
 
+=head2 get_interfaces
+
+=cut
 sub get_interfaces{
     my $self = shift;
     my %params = @_;
@@ -183,6 +198,9 @@ sub get_interfaces{
     return \@interfaces;
 }
 
+=head2 get_configuration
+
+=cut
 sub get_configuration{
     my $self = shift;
     my %params = @_;
@@ -213,6 +231,9 @@ sub get_configuration{
     return $resp->{'nc:data'}->{'brcd:netiron-config'};
 }
 
+=head2 edit_config
+
+=cut
 sub edit_config{
     my $self = shift;
     my %params = @_;

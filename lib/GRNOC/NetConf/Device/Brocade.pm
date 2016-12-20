@@ -15,6 +15,9 @@ has model => (is => 'rwp');
 has version => (is => 'rwp');
 has model_inst => (is => 'rwp');
 
+=head2 BUILD
+
+=cut
 sub BUILD{
     my ($self) = @_;
     
@@ -39,28 +42,43 @@ sub _connect_to_model_version{
     }
 }
 
+=head2 send
+
+=cut
 sub send{
     my $self = shift;
     return $self->model_inst->send(@_);
 }
 
+=head2 recv
+
+=cut
 sub recv{
     my $self = shift;
     return $self->model_inst->recv();
 }
 
+=head2 get_interfaces
+
+=cut
 sub get_interfaces{
     my $self = shift;
     my %params = @_;
     return $self->model_inst->get_interfaces();
 }
 
+=head2 get_configuration
+
+=cut
 sub get_configuration{
     my $self = shift;
     my %params = @_;
     return $self->model_inst->get_configuration( %params );
 }
 
+=head2 edit_configuration
+
+=cut
 sub edit_configuration{
     my $self = shift;
     my %params = @_;
