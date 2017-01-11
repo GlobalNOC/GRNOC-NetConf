@@ -11,7 +11,7 @@ BuildArch:noarch
 
 BuildRequires: perl
 BuildRequires: perl-Test-Pod
-BuildRequires: perl-Test-Coverage
+BuildRequires: perl-Test-Pod-Coverage
 Requires: perl-XML-Writer
 Requires: perl-Moo
 Requires: perl-Net-SSH2
