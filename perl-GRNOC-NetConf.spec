@@ -10,6 +10,8 @@ BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:noarch
 
 BuildRequires: perl
+BuildRequires: perl-Test-Pod
+BuildRequires: perl-Test-Coverage
 Requires: perl-GRNOC-Log
 Requires: perl-Devel-Cover
 Requires: perl-Event-Lib
