@@ -1,6 +1,6 @@
 Summary: GRNOC NetConf Perl Libraries
 Name: perl-GRNOC-NetConf
-Version: 0.0.1
+Version: 0.0.2
 Release: 1%{?dist}
 License: APL 2.0
 Group: Network
@@ -24,7 +24,7 @@ Requires: perl-JSON-Schema
 Requires: perl-autovivification
 Requires: perl(GRNOC::WebService::Regex)
 Requires: perl-Proc-Daemon
-Requires: uuid-perl
+Requires: perl(Data::UUID)
 
 %description
 The GRNOC::NetConf collection is a set of perl modules which are used to
