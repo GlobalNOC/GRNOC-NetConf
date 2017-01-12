@@ -47,16 +47,18 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(755, root, root, -)
+%{perl_vendorlib}/GRNOC/NetConf/Device
+%{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/
+%{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe/
+%{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/
+
 %defattr(644, root, root, -)
 %{perl_vendorlib}/GRNOC/NetConf/Device.pm
-%{perl_vendorlib}/GRNOC/NetConf/Device
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade.pm
-%{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe.pm
-%{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe/
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe/5_8_0.pm
 %{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS.pm
-%{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/
 %{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/13_3R1_6.pm
 
 %doc %{_mandir}/man3/GRNOC::NetConf::Device.3pm.gz
