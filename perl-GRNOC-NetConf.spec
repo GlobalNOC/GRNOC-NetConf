@@ -14,6 +14,7 @@ BuildRequires: perl-Test-Pod
 BuildRequires: perl-Test-Pod-Coverage
 Requires: perl-XML-Writer
 Requires: perl-Moo
+Requires: perl-Moose
 Requires: perl-Net-SSH2
 Requires: perl-GRNOC-Log
 Requires: perl-Devel-Cover
