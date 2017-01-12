@@ -22,7 +22,7 @@ has version => (is => 'rwp' );
 has device => ( is => 'rwp' );
 has model => ( is => 'rwp' );
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 =head2 BUILD
 
