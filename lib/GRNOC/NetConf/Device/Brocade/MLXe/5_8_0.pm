@@ -6,6 +6,7 @@ use strict;
 use warnings;
 
 use Moo;
+use GRNOC::Log;
 use XML::Writer;
 use XML::Simple;
 
@@ -13,7 +14,7 @@ has logger => (is => 'rwp');
 has ssh => (is => 'rwp');
 has chan => (is => 'rwp');
 has msg_id => (is => 'rwp');
-
+has auto_connect => (is => 'rwp', default => 1);
 
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant BROCADE => "http://brocade.com/ns/netconf/config/netiron-config/";
@@ -27,7 +28,9 @@ sub BUILD{
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device::Brocade::MLXe::5_8_0");
     $self->_set_logger($logger);
 
-    $self->_connect();
+    if ($self->auto_connect == 1) {
+        $self->_connect();
+    }
     $self->_set_msg_id(0);
 
     return $self;
@@ -43,7 +46,6 @@ sub _connect{
     my $subsystem = $self->chan->subsystem('netconf');
     
     $self->do_handshake();
-
 }
 
 sub _get_msg_id{
