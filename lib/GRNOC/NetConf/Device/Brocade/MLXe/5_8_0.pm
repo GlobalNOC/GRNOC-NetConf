@@ -106,7 +106,6 @@ sub recv{
         $resp .= $buf;
     } until($resp =~ s/]]>]]>$//);
     $self->logger->debug("Received XML response '$resp'");
-    
     my $xs = XML::Simple->new();
     my $doc = $xs->XMLin($resp);
 
@@ -165,8 +164,13 @@ sub get_interfaces{
     $self->send($xml);
     my $resp = $self->recv();
 
+    my $_interfaces = $resp->{'nc:data'}->{'netiron-statedata'}->{'brcd:interface-statedata'}->{'brcd:interface'};
+    if (ref($_interfaces) eq 'HASH') {
+        $_interfaces = [$_interfaces];
+    }
+
     my @interfaces;
-    foreach my $int (@{$resp->{'nc:data'}->{'netiron-statedata'}->{'brcd:interface-statedata'}->{'brcd:interface'}}){
+    foreach my $int (@{$_interfaces}) {
         my $obj = {};
         $obj->{'mac-address'} = $int->{'brcd:mac-address'};
         $obj->{'speed'} = $int->{ 'brcd:speed'};
