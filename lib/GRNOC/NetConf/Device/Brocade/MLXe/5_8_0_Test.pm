@@ -39,7 +39,10 @@ sub recv {
 
     my $chan   = $self->responseChan;
     my $string = $chan->recv();
-    return $string;
+
+    my $parser = XML::Simple->new();
+    my $xml    = $parser->XMLin($string);
+    return $xml;
 }
 
 1;
