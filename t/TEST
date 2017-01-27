@@ -33,7 +33,7 @@ if (defined $ENV{'TEST_FILES'}){
     }
 }
 else {
-    @tests = (<t/*.t>);
+    @tests = split(/\n/, `find t -type f | grep -v ".svn" | grep -v "~" | grep .t`);
 }
 
 if ($formatter) {
