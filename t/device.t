@@ -8,7 +8,7 @@ use lib "$FindBin::Bin/../../lib";
 use Data::Dumper;
 use GRNOC::Log;
 use GRNOC::NetConf::Device;
-use Test::More tests => 1;
+use Test::More tests => 4;
 
 my $logger = GRNOC::Log->new(config => '/etc/grnoc/logging.conf');
 my $log    = $logger->get_logger('GRNOC.Demo');
@@ -18,9 +18,40 @@ $device = GRNOC::NetConf::Device->new( host => '156.56.6.220',
                                        port => 830,
                                        username => '',
                                        password => '',
+                                       type => 'ACME',
+                                       model => 'Switch1',
+                                       version => '1.0.0',
+                                       auto_connect => 0 );
+ok($device->error ne '', "Bad device types results in error");
+
+
+$device = GRNOC::NetConf::Device->new( host => '156.56.6.220',
+                                       port => 830,
+                                       username => '',
+                                       password => '',
+                                       type => 'Brocade',
+                                       model => 'Switch1',
+                                       version => '1.0.0',
+                                       auto_connect => 0 );
+ok($device->error ne '', "Bad device model results in error");
+
+
+$device = GRNOC::NetConf::Device->new( host => '156.56.6.220',
+                                       port => 830,
+                                       username => '',
+                                       password => '',
+                                       type => 'Brocade',
+                                       model => 'MLXe',
+                                       version => '1.0.0',
+                                       auto_connect => 0 );
+ok($device->error ne '', "Bad device version results in error");
+
+$device = GRNOC::NetConf::Device->new( host => '156.56.6.220',
+                                       port => 830,
+                                       username => '',
+                                       password => '',
                                        type => 'Brocade',
                                        model => 'MLXe',
                                        version => '5.8.0',
                                        auto_connect => 0 );
-
-ok(defined $device, "Device created.");
+ok($device->error eq '', "Device created.");

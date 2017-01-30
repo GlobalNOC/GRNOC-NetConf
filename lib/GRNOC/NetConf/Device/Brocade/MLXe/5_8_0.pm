@@ -15,6 +15,7 @@ has ssh => (is => 'rwp');
 has chan => (is => 'rwp');
 has msg_id => (is => 'rwp');
 has auto_connect => (is => 'rwp', default => 1);
+has error => (is => 'rwp', default => '');
 
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant BROCADE => "http://brocade.com/ns/netconf/config/netiron-config/";

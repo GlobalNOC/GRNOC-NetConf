@@ -15,6 +15,7 @@ has model => (is => 'rwp');
 has version => (is => 'rwp');
 has model_inst => (is => 'rwp');
 has auto_connect => ( is => 'rwp', default => 1 );
+has error => ( is => 'rwp', default => '' );
 
 =head2 BUILD
 
@@ -25,22 +26,33 @@ sub BUILD{
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device::Brocade");
     $self->_set_logger($logger);
 
-    $self->_connect_to_model_version();
-    
+    my $_model = $self->_connect_to_model_version();
+    if ($self->error ne '') {
+        return undef;
+    }
+
+    $self->_set_model_inst($_model);
     return $self;
 }
 
 sub _connect_to_model_version{
     my $self = shift;
 
-    if($self->model eq 'MLXe'){
-        $self->logger->debug("Creating Device MLXe");
-        my $model = GRNOC::NetConf::Device::Brocade::MLXe->new(version => $self->version, ssh => $self->ssh, auto_connect => $self->auto_connect);
-        $self->_set_model_inst($model);
-    }else{
-        $self->logger->error("Unsupported Model: " . $self->model);
-        return;
+    my $_model;
+    if ($self->model eq 'MLXe') {
+        $_model = GRNOC::NetConf::Device::Brocade::MLXe->new(version => $self->version, ssh => $self->ssh, auto_connect => $self->auto_connect);
+    } else {
+        my $error = "Unsupported model $self->model specified.";
+        $self->logger->error($error);
+        $self->_set_error($error);
     }
+
+    if (defined $_model && $_model->error ne '') {
+        $self->_set_error($_model->error);
+        $_model = undef;
+    }
+
+    return $_model;
 }
 
 =head2 send
