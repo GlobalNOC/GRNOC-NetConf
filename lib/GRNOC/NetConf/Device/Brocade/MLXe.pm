@@ -13,6 +13,7 @@ has logger => (is => 'rwp');
 has version => (is => 'rwp');
 has ssh => (is => 'rwp');
 has version_inst => (is => 'rwp');
+has auto_connect => ( is => 'rwp', default => 1 );
 
 =head2 BUILD
 
@@ -33,7 +34,7 @@ sub _connect_to_version{
 
     if($self->{'version'} =~ /5.8.0/){
         $self->logger->debug("Creating 5.8.0 version");
-        my $version = GRNOC::NetConf::Device::Brocade::MLXe::5_8_0->new( ssh => $self->ssh);
+        my $version = GRNOC::NetConf::Device::Brocade::MLXe::5_8_0->new(ssh => $self->ssh, auto_connect => $self->auto_connect);
         $self->_set_version_inst($version);
 
     }else{

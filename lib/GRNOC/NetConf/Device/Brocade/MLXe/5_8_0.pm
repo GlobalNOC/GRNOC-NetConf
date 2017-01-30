@@ -27,6 +27,7 @@ sub BUILD{
 
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device::Brocade::MLXe::5_8_0");
     $self->_set_logger($logger);
+    $self->logger->info("Creating device: Brocade MLXe v5.8.0");
 
     if ($self->auto_connect == 1) {
         $self->_connect();

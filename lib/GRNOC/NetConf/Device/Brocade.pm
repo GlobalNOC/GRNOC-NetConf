@@ -14,6 +14,7 @@ has ssh => ( is => 'rwp');
 has model => (is => 'rwp');
 has version => (is => 'rwp');
 has model_inst => (is => 'rwp');
+has auto_connect => ( is => 'rwp', default => 1 );
 
 =head2 BUILD
 
@@ -34,7 +35,7 @@ sub _connect_to_model_version{
 
     if($self->model eq 'MLXe'){
         $self->logger->debug("Creating Device MLXe");
-        my $model = GRNOC::NetConf::Device::Brocade::MLXe->new( version => $self->version, ssh => $self->ssh);
+        my $model = GRNOC::NetConf::Device::Brocade::MLXe->new(version => $self->version, ssh => $self->ssh, auto_connect => $self->auto_connect);
         $self->_set_model_inst($model);
     }else{
         $self->logger->error("Unsupported Model: " . $self->model);
