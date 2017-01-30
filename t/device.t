@@ -5,13 +5,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../lib";
 
-use Data::Dumper;
-use GRNOC::Log;
 use GRNOC::NetConf::Device;
 use Test::More tests => 4;
 
-my $logger = GRNOC::Log->new(config => '/etc/grnoc/logging.conf');
-my $log    = $logger->get_logger('GRNOC.Demo');
 
 my $device;
 $device = GRNOC::NetConf::Device->new( host => '156.56.6.220',

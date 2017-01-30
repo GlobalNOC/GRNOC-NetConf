@@ -5,7 +5,6 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
-use Data::Dumper;
 use GRNOC::NetConf::Device::Brocade::MLXe::5_8_0;
 use GRNOC::NetConf::Device;
 use Test::More tests => 2;
