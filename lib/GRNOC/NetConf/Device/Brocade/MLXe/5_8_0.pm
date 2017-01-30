@@ -15,6 +15,7 @@ has ssh => (is => 'rwp');
 has chan => (is => 'rwp');
 has msg_id => (is => 'rwp');
 has auto_connect => (is => 'rwp', default => 1);
+has error => (is => 'rwp', default => '');
 
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant BROCADE => "http://brocade.com/ns/netconf/config/netiron-config/";
@@ -27,6 +28,7 @@ sub BUILD{
 
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device::Brocade::MLXe::5_8_0");
     $self->_set_logger($logger);
+    $self->logger->info("Creating device: Brocade MLXe v5.8.0");
 
     if ($self->auto_connect == 1) {
         $self->_connect();
@@ -62,7 +64,6 @@ sub send{
     my $xml = shift;
 
     $self->logger->debug("Sending: " . $xml);
-
     $xml .= ']]>]]>';
 
     my $len = length($xml);
@@ -77,10 +78,9 @@ sub send{
             return 0;
         }
         $written += $nbytes;
-        $self->logger->debug("Wrote $nbytes bytes (total written: $written).");
+        $self->logger->debug("Written: $nbytes Total Written: $written Total Expected: $len");
         substr($xml, 0, $nbytes) = '';
     }
-    $self->logger->debug("Successfully wrote $written bytes to SSH channel!");
 
     return 1;
 }
@@ -93,8 +93,8 @@ sub recv{
 
     $self->chan->blocking(0);
 
-    $self->logger->debug("Reading XML response from Netconf server...");
     my ($resp, $buf);
+    my $read;
     do {
         # Wait up to 10 seconds for data to become available before attempting
         # to read anything (in order to avoid busy-looping on $chan->read())
@@ -102,16 +102,16 @@ sub recv{
         $self->ssh->poll(10000, \@poll);
 
         my $nbytes = $self->chan->read($buf, 65536) || 0;
-        $self->logger->debug("Read $nbytes bytes from SSH channel: '$buf'");
+        $read += $nbytes;
+        $self->logger->debug("Read: $nbytes Total Read: $read");
         $resp .= $buf;
     } until($resp =~ s/]]>]]>$//);
-    $self->logger->debug("Received XML response '$resp'");
-    
+
     my $xs = XML::Simple->new();
     my $doc = $xs->XMLin($resp);
 
+    $self->logger->debug("Received: $resp");
     return $doc;
-
 }
 
 =head2 do_handshake
@@ -165,8 +165,13 @@ sub get_interfaces{
     $self->send($xml);
     my $resp = $self->recv();
 
+    my $_interfaces = $resp->{'nc:data'}->{'netiron-statedata'}->{'brcd:interface-statedata'}->{'brcd:interface'};
+    if (ref($_interfaces) eq 'HASH') {
+        $_interfaces = [$_interfaces];
+    }
+
     my @interfaces;
-    foreach my $int (@{$resp->{'nc:data'}->{'netiron-statedata'}->{'brcd:interface-statedata'}->{'brcd:interface'}}){
+    foreach my $int (@{$_interfaces}) {
         my $obj = {};
         $obj->{'mac-address'} = $int->{'brcd:mac-address'};
         $obj->{'speed'} = $int->{ 'brcd:speed'};
@@ -233,10 +238,10 @@ sub get_configuration{
     return $resp->{'nc:data'}->{'brcd:netiron-config'};
 }
 
-=head2 edit_config
+=head2 edit_configuration
 
 =cut
-sub edit_config{
+sub edit_configuration {
     my $self = shift;
     my %params = @_;
     my $xml = "";
@@ -270,7 +275,7 @@ sub edit_config{
     $self->send($xml);
 
     my $resp = $self->recv();
-    if(defined($resp->{'nc:rpc-reply'}->{'nc:ok'})){
+    if (defined($resp->{'nc:ok'})) {
         return 1;
     }else{
         return 0;

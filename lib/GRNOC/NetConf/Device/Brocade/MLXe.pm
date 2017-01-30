@@ -13,6 +13,8 @@ has logger => (is => 'rwp');
 has version => (is => 'rwp');
 has ssh => (is => 'rwp');
 has version_inst => (is => 'rwp');
+has auto_connect => ( is => 'rwp', default => 1 );
+has error => ( is => 'rwp', default => '' );
 
 =head2 BUILD
 
@@ -23,23 +25,35 @@ sub BUILD{
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device::Brocade::MLXe");
     $self->_set_logger($logger);
 
-    $self->_connect_to_version();
+    my $_version = $self->_connect_to_version();
+    if ($self->error ne '') {
+        return undef;
+    }
 
+    $self->_set_version_inst($_version);
     return $self;
 }
 
 sub _connect_to_version{
     my $self = shift;
 
-    if($self->{'version'} =~ /5.8.0/){
+    my $_version;
+    if ($self->{'version'} =~ /5.8.0/) {
         $self->logger->debug("Creating 5.8.0 version");
-        my $version = GRNOC::NetConf::Device::Brocade::MLXe::5_8_0->new( ssh => $self->ssh);
-        $self->_set_version_inst($version);
-
-    }else{
-        $self->logger->error("Unsupported Version: " . $self->version);
-        return;
+        $_version = GRNOC::NetConf::Device::Brocade::MLXe::5_8_0->new(ssh => $self->ssh, auto_connect => $self->auto_connect);
+    } else {
+        my $error = "Unsupported version " . $self->version . " specified.";
+        $self->logger->error($error);
+        $self->_set_error($error);
     }
+
+    
+    if (defined $_version && $_version->error ne '') {
+        $self->_set_error($_version->error);
+        $_version = undef;
+    }
+
+    return $_version;
 }
 
 =head2 send

@@ -21,6 +21,8 @@ has type => ( is => 'rwp' );
 has version => (is => 'rwp' );
 has device => ( is => 'rwp' );
 has model => ( is => 'rwp' );
+has auto_connect => ( is => 'rwp', default => 1 );
+has error => ( is => 'rwp', default => '' );
 
 our $VERSION = '0.0.2';
 
@@ -31,36 +33,46 @@ sub BUILD{
     my ($self) = @_;
 
     my $logger = GRNOC::Log->get_logger("GRNOC::NetConf::Device");
-
     $self->_set_logger( $logger );
 
     my $ssh2 = Net::SSH2->new();
-    $ssh2->connect($self->{'host'}, $self->{'port'});
-    $ssh2->auth(username => $self->{'username'},
-                password => $self->{'password'});
-    
+    if ($self->auto_connect == 1) {
+        $self->logger->info("Connecting to Device via SSH");
+        $ssh2->connect($self->{'host'}, $self->{'port'});
+        $ssh2->auth(username => $self->{'username'},
+                    password => $self->{'password'});
+    }
     $self->{'ssh'} = $ssh2;
 
-    $self->_create_type_object();
+    my $_device = $self->_create_type_object();
+    if ($self->error ne '') {
+        return undef;
+    }
 
+    $self->_set_device($_device);
     return $self;
 }
 
 sub _create_type_object{
     my $self = shift;
 
-    if($self->type eq 'JUNOS'){
-        my $junos = GRNOC::NetConf::Device::JUNOS->new(ssh => $self->{'ssh'}, model => $self->model, version => $self->version);
-        $self->_set_device( $junos );
-    }elsif($self->type eq 'Brocade'){
-        $self->logger->debug("Creating Brocade");
-        my $mlxe = GRNOC::NetConf::Device::Brocade->new(ssh => $self->{'ssh'}, model => $self->model, version => $self->version);
-        $self->_set_device( $mlxe );
-    }else{
-        $self->logger->error("Unsupported type: " . $self->type);
-        return;
+    my $_device;
+    if ($self->type eq 'JUNOS') {
+        $_device = GRNOC::NetConf::Device::JUNOS->new(ssh => $self->{'ssh'}, model => $self->model, version => $self->version, auto_connect => $self->auto_connect);
+    } elsif ($self->type eq 'Brocade') {
+        $_device = GRNOC::NetConf::Device::Brocade->new(ssh => $self->{'ssh'}, model => $self->model, version => $self->version, auto_connect => $self->auto_connect);
+    } else {
+        my $error = "Unsupported type $self->type specified.";
+        $self->logger->error($error);
+        $self->_set_error($error);
     }
-    
+
+    if (defined $_device && $_device->error ne '') {
+        $self->_set_error($_device->error);
+        $_device = undef;
+    }
+
+    return $_device;
 }
 
 =head2 send
