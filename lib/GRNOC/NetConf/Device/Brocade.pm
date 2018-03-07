@@ -17,6 +17,28 @@ has model_inst => (is => 'rwp');
 has auto_connect => ( is => 'rwp', default => 1 );
 has error => ( is => 'rwp', default => '' );
 
+=head1 GRNOC::NetConf::Device::Brocade
+
+=cut
+
+=over 4
+
+=item auto_connect
+
+=item error
+
+=item logger
+
+=item model
+
+=item model_inst
+
+=item ssh
+
+=item version
+
+=back
+
 =head2 BUILD
 
 =cut

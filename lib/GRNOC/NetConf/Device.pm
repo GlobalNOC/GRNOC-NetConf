@@ -26,6 +26,36 @@ has error => ( is => 'rwp', default => '' );
 
 our $VERSION = '0.0.2';
 
+=head1 GRNOC::NetConf::Device
+
+=cut
+
+=over 4
+
+=item auto_connect
+
+=item device
+
+=item error
+
+=item host
+
+=item logger
+
+=item model
+
+=item password
+
+=item port
+
+=item type
+
+=item username
+
+=item version
+
+=back
+
 =head2 BUILD
 
 =cut
