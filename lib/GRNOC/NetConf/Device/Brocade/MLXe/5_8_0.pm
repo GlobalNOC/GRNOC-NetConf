@@ -20,6 +20,26 @@ has error => (is => 'rwp', default => '');
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant BROCADE => "http://brocade.com/ns/netconf/config/netiron-config/";
 
+=head1 GRNOC::NetConf::Device::Brocade::MLXe::5_8_0
+
+=cut
+
+=over 4
+
+=item auto_connect
+
+=item chan
+
+=item error
+
+=item logger
+
+=item msg_id
+
+=item ssh
+
+=back
+
 =head2 BUILD
 
 =cut
@@ -107,10 +127,18 @@ sub recv{
         $resp .= $buf;
     } until($resp =~ s/]]>]]>$//);
 
-    my $xs = XML::Simple->new();
-    my $doc = $xs->XMLin($resp);
-
     $self->logger->debug("Received: $resp");
+
+    my $xs = XML::Simple->new();
+    my $doc = undef;
+
+    eval {
+        $doc = $xs->XMLin($resp);
+    };
+    if ($@) {
+        $self->logger->error("$@");
+    }
+
     return $doc;
 }
 
