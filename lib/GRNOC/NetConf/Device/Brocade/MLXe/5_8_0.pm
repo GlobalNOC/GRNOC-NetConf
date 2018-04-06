@@ -115,15 +115,25 @@ sub recv{
 
     my ($resp, $buf);
     my $read;
+    my $timeout = time() + 15;
     do {
         # Wait up to 10 seconds for data to become available before attempting
         # to read anything (in order to avoid busy-looping on $chan->read())
         my @poll = ({ handle => $self->chan, events => 'in' });
         $self->ssh->poll(10000, \@poll);
 
-        my $nbytes = $self->chan->read($buf, 65536) || 0;
+        my $nbytes = $self->chan->read($buf, 65536);
+        if (!defined $nbytes || time() > $timeout) {
+            $self->logger->error("Failed to read from SSH channel!");
+            return;
+        }
+
+        if ($nbytes > 0) {
+            $timeout = time() + 15;
+            $self->logger->debug("Read: $nbytes Total Read: $read");
+        }
+
         $read += $nbytes;
-        $self->logger->debug("Read: $nbytes Total Read: $read");
         $resp .= $buf;
     } until($resp =~ s/]]>]]>$//);
 
