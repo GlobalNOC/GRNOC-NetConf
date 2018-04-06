@@ -1,6 +1,6 @@
 Summary: GRNOC NetConf Perl Libraries
 Name: perl-GRNOC-NetConf
-Version: 0.0.3
+Version: 0.0.4
 Release: 1%{?dist}
 License: APL 2.0
 Group: Network
