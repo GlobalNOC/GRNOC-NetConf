@@ -9,6 +9,7 @@ use Net::SSH2;
 use GRNOC::NetConf::Device::Brocade;
 use GRNOC::NetConf::Device::JUNOS;
 use GRNOC::Log;
+use Data::Dumper;
 
 use Moo;
 
