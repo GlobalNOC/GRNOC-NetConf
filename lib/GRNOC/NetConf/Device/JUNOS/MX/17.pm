@@ -20,10 +20,30 @@ has error => (is => 'rwp', default => '');
 
 use constant NETCONF => "urn:ietf:params:xml:ns:netconf:base:1.0";
 use constant JUNOS => "http://xml.juniper.net/junos/17.3R3/junos";
+
 =head1 GRNOC::NetConf::Device::JUNOS::MX::17.3R3
 
 =cut
 
+=over 4
+
+=item logger
+
+=item ssh
+
+=item chan
+
+=item msg_id
+
+=item auto_connect
+
+=item error
+
+=back
+
+=head2 BUILD
+
+=cut
 sub BUILD{
 
     my ($self) = @_;
@@ -63,7 +83,6 @@ sub _get_msg_id{
 =head2 send
 
 =cut
-
 sub send{
     my $self = shift;
     my $xml = shift;
@@ -91,6 +110,7 @@ sub send{
 }
 
 =head2 recv
+
 =cut
 sub recv{
     my $self = shift;
@@ -158,6 +178,9 @@ sub _hello{
     return $hello;
 }
 
+=head2 get_vlans
+
+=cut
 sub get_vlans{
     my $self = shift;
     my %params = @_;
@@ -209,10 +232,10 @@ sub get_vlans{
     return \@vlans;
 }
 
-sub get_bridge_domain_interfaces{
-    
-}
 
+=head2 get_interfaces
+
+=cut
 sub get_interfaces{
     my $self = shift;
     my %params = @_;
@@ -277,6 +300,9 @@ sub get_interfaces{
 
 }
 
+=head2 get_configuration
+
+=cut
 sub get_configuration{
     my $self = shift;
     my %params = @_;
@@ -303,6 +329,9 @@ sub get_configuration{
     return $resp->{'data'}->{'configuration'};
 }
 
+=head2 edit_configuration
+
+=cut
 sub edit_configuration{
     my $self = shift;
     my %params = @_;
@@ -347,6 +376,9 @@ sub edit_configuration{
     return $resp;
 }
 
+=head2 commit
+
+=cut
 sub commit{
     my $self = shift;
     my %params = @_;

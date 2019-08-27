@@ -17,17 +17,27 @@ has auto_connect => ( is => 'rwp', default => 1 );
 has error => ( is => 'rwp', default => '' );
 
 =head1 GRNOC::NetConf::Device::JUNOS::MX
+
 =cut
 
 =over 4
+
 =item auto_connect
+
 =item error
+
 =item logger
+
 =item ssh
+
 =item version
+
 =item version_inst
+
 =back
+
 =head2 BUILD
+
 =cut
 sub BUILD{
     my ($self) = @_;
