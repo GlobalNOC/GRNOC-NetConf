@@ -5,6 +5,8 @@ lib/GRNOC/NetConf/Device/Brocade/MLXe.pm
 lib/GRNOC/NetConf/Device/Brocade/MLXe/5_8_0.pm
 lib/GRNOC/NetConf/Device/JUNOS.pm
 lib/GRNOC/NetConf/Device/JUNOS/13_3R1_6.pm
+lib/GRNOC/NetConf/Device/JUNOS/MX.pm
+lib/GRNOC/NetConf/Device/JUNOS/MX/17.pm
 Makefile.PL
 MANIFEST			This list of files
 perl-GRNOC-NetConf.spec

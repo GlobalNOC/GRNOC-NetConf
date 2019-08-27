@@ -25,7 +25,7 @@ has model => ( is => 'rwp' );
 has auto_connect => ( is => 'rwp', default => 1 );
 has error => ( is => 'rwp', default => '' );
 
-our $VERSION = '0.0.4';
+our $VERSION = '0.0.5';
 
 =head1 GRNOC::NetConf::Device
 

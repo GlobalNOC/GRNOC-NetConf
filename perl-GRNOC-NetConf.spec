@@ -1,6 +1,6 @@
 Summary: GRNOC NetConf Perl Libraries
 Name: perl-GRNOC-NetConf
-Version: 0.0.4
+Version: 0.0.5
 Release: 1%{?dist}
 License: APL 2.0
 Group: Network
@@ -58,6 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe/
 %{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/
+%{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/MX/
 
 %defattr(644, root, root, -)
 %{perl_vendorlib}/GRNOC/NetConf/Device.pm
@@ -66,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/GRNOC/NetConf/Device/Brocade/MLXe/5_8_0.pm
 %{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS.pm
 %{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/13_3R1_6.pm
+%{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/MX.pm
+%{perl_vendorlib}/GRNOC/NetConf/Device/JUNOS/MX/17.pm
 
 %doc %{_mandir}/man3/GRNOC::NetConf::Device.3pm.gz
 %doc %{_mandir}/man3/GRNOC::NetConf::Device::Brocade.3pm.gz
@@ -73,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man3/GRNOC::NetConf::Device::Brocade::MLXe::5_8_0.3pm.gz
 %doc %{_mandir}/man3/GRNOC::NetConf::Device::JUNOS.3pm.gz
 %doc %{_mandir}/man3/GRNOC::NetConf::Device::JUNOS::13_3R1_6.3pm.gz
+%doc %{_mandir}/man3/GRNOC::NetConf::Device::JUNOS::MX.3pm.gz
+%doc %{_mandir}/man3/GRNOC::NetConf::Device::JUNOS::MX::17.3pm.gz
 
 %changelog
 
