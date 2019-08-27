@@ -196,7 +196,7 @@ sub get_vlans{
 #</rpc-reply>
 
 
-    my $vlans = $resp->{'l2ald-bridge-instance-information'}->{'l2ald-bridge-instance-group'}
+    my $vlans = $resp->{'l2ald-bridge-instance-information'}->{'l2ald-bridge-instance-group'};
     my @vlans;
     foreach my $vlan (@{$vlans}){
 	my $obj = {};
@@ -341,11 +341,9 @@ sub edit_configuration{
 
     $self->send($xml);
     my $resp = $self->recv();
-
     #check for success
 
     my $res = $self->commit();
-    
     return $resp;
 }
 
